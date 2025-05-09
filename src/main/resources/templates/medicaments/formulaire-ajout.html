@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des médicaments</title>
+    <!-- Inclusion de la partie head -->
+    <div th:replace="~{fragments/header :: head}"></div>
+</head>
+<body>
+    <!-- Inclusion du header -->
+    <div th:replace="~{fragments/header :: header}"></div>
+	<div class="container mt-4">
+	    <div class="card shadow">
+	        <div class="card-header bg-primary text-white">
+	            <h2 class="mb-0 text-center">
+	                <i class="bi bi-plus-circle"></i> 
+	                <span th:text="${medicament.id != null} ? 'Modifier le médicament' : 'Ajouter un médicament'"></span>
+	            </h2>
+	        </div>
+	        
+	        <div class="card-body">
+	            <form th:action="${medicament.id != null} ? 
+	                          @{/admin/medicaments/modifier/{id}(id=${medicament.id})} : 
+	                          @{/admin/medicaments/ajouter}" 
+	                  th:object="${medicament}" method="post" enctype="multipart/form-data">
+	                
+	                <div class="row">
+	                    <div class="col-md-6 mb-3">
+	                        <label for="nom" class="form-label">Nom du médicament</label>
+	                        <input type="text" class="form-control" id="nom" th:field="*{nom}" required>
+	                        <div th:if="${#fields.hasErrors('nom')}" th:errors="*{nom}" class="invalid-feedback d-block"></div>
+	                    </div>
+	                    
+	                    <div class="col-md-6 mb-3">
+	                        <label for="category" class="form-label">Catégorie</label>
+	                         <select name="categoryId" class="form-control" required>
+						        <option value="">-- Sélectionner une catégorie --</option>
+						        <option th:each="category : ${categories}" 
+						                th:value="${category?.id}" 
+						                th:text="${category?.name}"
+						                th:selected="${medicament.category != null and medicament.category.id == category.id}">
+						        </option>
+						    </select>
+	                </div>
+	                
+	                <div class="row">
+	                    <div class="col-md-4 mb-3">
+	                        <label for="quantite" class="form-label">Quantité en stock</label>
+	                        <input type="number" class="form-control" id="quantite" th:field="*{quantite}" min="0" required>
+	                        <div th:if="${#fields.hasErrors('quantite')}" th:errors="*{quantite}" class="invalid-feedback d-block"></div>
+	                    </div>
+	                    
+	                    <div class="col-md-4 mb-3">
+	                        <label for="prix" class="form-label">Prix unitaire</label>
+	                        <div class="input-group">
+	                            <span class="input-group-text">$</span>
+	                            <input type="number" step="0.01" class="form-control" id="prix" th:field="*{prix}" min="0" required>
+	                        </div>
+	                        <div th:if="${#fields.hasErrors('prix')}" th:errors="*{prix}" class="invalid-feedback d-block"></div>
+	                    </div>
+	                    
+	                    <div class="col-md-4 mb-3">
+	                        <label for="dateValidite" class="form-label">Date de validité</label>
+	                        <input type="date" class="form-control" id="dateValidite" th:field="*{dateValidite}" required>
+	                    </div>
+	                </div>
+	                
+	                <div class="mb-3">
+	                    <label for="image" class="form-label">Image du médicament</label>
+	                    <input type="file" class="form-control" id="image" name="image" accept="image/*">
+	                    <small class="text-muted">Format: JPG, PNG (max 2MB)</small>
+	                    <div th:if="${medicament.imagePath != null}" class="mt-2">
+	                        <img th:src="@{'/uploads/' + ${medicament.imagePath}}" style="max-height: 100px;" class="img-thumbnail">
+	                    </div>
+	                </div>
+	                
+	                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+	                    <a th:href="@{/admin/medicaments}" class="btn btn-outline-secondary me-md-2">
+	                        <i class="bi bi-x-circle"></i> Annuler
+	                    </a>
+	                    <button type="submit" class="btn btn-primary">
+	                        <i class="bi bi-check-circle"></i> 
+	                        <span th:text="${medicament.id != null} ? 'Mettre à jour' : 'Enregistrer'"></span>
+	                    </button>
+	                </div>
+	            </form>
+	        </div>
+	    </div>
+	</div>
+
+ <!-- Inclusion du footer -->
+    <div th:replace="~{fragments/footer :: footer}"></div>
+
+    <!-- Scripts JS (dans le template principal) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des médicaments</title>
+    <div th:replace="~{fragments/header :: head}"></div>
+</head>
+<body>
+    <div th:replace="~{fragments/header :: header}"></div>
+
+	<div class="container mt-4">
+	    <div class="card shadow">
+	        <div class="card-body">
+	            <div class="d-flex justify-content-between align-items-center mb-4">
+	                <h2 class="mb-0">
+	                    <i class="bi bi-capsule"></i> Liste des médicaments
+	                </h2>
+	                <div>
+	                    <a th:href="@{/admin/medicaments/ajouter}" class="btn btn-success me-2">
+	                        <i class="bi bi-plus-lg"></i> Nouveau médicament
+	                    </a>
+	                    <a th:href="@{/admin/categories}" class="btn btn-outline-primary">
+	                        <i class="bi bi-tags"></i> Gérer les catégories
+	                    </a>
+	                </div>
+	            </div>
+	            
+	            <form th:action="@{/admin/medicaments/rechercher}" method="get" class="mb-4">
+	                <div class="row g-3">
+	                    <div class="col-md-6">
+	                        <div class="input-group">
+	                            <input type="text" th:field="${searchForm.searchTerm}" class="form-control" 
+	                                   placeholder="Rechercher par nom...">
+	                            <button type="submit" class="btn btn-primary">
+	                                <i class="bi bi-search"></i> Rechercher
+	                            </button>
+	                        </div>
+	                    </div>
+	                    <div class="col-md-4">
+	                       <select th:field="${searchForm.categoryId}" class="form-select">
+							    <option value="">Toutes les catégories</option>
+							    <option th:each="cat : ${allCategories}" 
+							            th:value="${cat.id}" 
+							            th:text="${cat.name}"></option>
+							</select>
+	                    </div>
+	                    <div class="col-md-2">
+	                        <a th:href="@{/admin/medicaments}" class="btn btn-outline-secondary w-100">
+	                            <i class="bi bi-arrow-counterclockwise"></i> Réinitialiser
+	                        </a>
+	                    </div>
+	                </div>
+	            </form>
+	            
+	            <div class="table-responsive">
+	                  <div class="table-responsive">
+	                <table class="table table-hover align-middle">
+	                    <thead class="table-light">
+	                        <tr>
+	                            <th>Image</th>
+	                            <th>Nom</th>
+	                            <th>Catégorie</th>
+	                            <th class="text-end">Stock</th>
+	                            <th class="text-end">Prix</th>
+	                            <th class="text-end">Validité</th>
+	                            <th class="text-center">Actions</th>
+	                        </tr>
+	                    </thead>
+	                    <tbody>
+	                        <tr th:each="medicament : ${medicaments}">
+	                            <td>
+	                                <img th:if="${medicament.imagePath != null}" 
+	                                     th:src="@{'file:///C:/Users/ahmed/Documents/workspace-spring-tool-suite-4-4.20.1.RELEASE/phrarmacie/uploads/' + ${medicament.imagePath}}" 
+	                                     style="width: 50px; height: 50px; object-fit: cover;" 
+	                                     class="img-thumbnail">
+	                                <span th:unless="${medicament.imagePath != null}">-</span>
+	                            </td>
+	                            <td th:text="${medicament.nom}"></td>
+	                            <td th:text="${medicament.category?.name} ?: '-'"></td>
+	                            <td class="text-end" th:text="${medicament.quantite}"></td>
+	                            <td class="text-end" th:text="${'$' + #numbers.formatDecimal(medicament.prix, 1, 2)}"></td>
+	                            <td class="text-end" th:text="${#temporals.format(medicament.dateValidite, 'dd/MM/yyyy')}"></td>
+	                            <td class="text-center">
+	                                <div class="btn-group" role="group">
+	                                    <a th:href="@{/admin/medicaments/modifier/{id}(id=${medicament.id})}" 
+	                                       class="btn btn-sm btn-outline-primary me-3">
+	                                        <i class="bi bi-pencil"></i> Modifier
+	                                    </a>
+	                                    <form th:action="@{/admin/medicaments/supprimer/{id}(id=${medicament.id})}" 
+	                                          method="post" 
+	                                          class="d-inline"
+	                                          th:onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce médicament?');">
+	                                        <button type="submit" class="btn btn-sm btn-outline-danger">
+	                                            <i class="bi bi-trash"></i> Supprimer
+	                                        </button>
+	                                    </form>
+	                                </div>
+	                            </td>
+	                        </tr>
+	                    </tbody>
+	                </table>
+	            </div>
+	            
+	            <div th:if="${medicaments.empty}" class="alert alert-info text-center">
+	                <i class="bi bi-info-circle"></i> Aucun médicament trouvé
+	            </div>
+	            
+	            
+	        </div>
+	    </div>
+	</div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
