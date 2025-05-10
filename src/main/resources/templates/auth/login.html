@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
@@ -6,54 +6,94 @@
     <title>Connexion - Pharmacie</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        
         .login-container {
             max-width: 400px;
             margin: 0 auto;
             margin-top: 100px;
+            padding: 0 15px;
         }
+
+       
         .login-logo {
             text-align: center;
             margin-bottom: 30px;
+        }
+
+        
+        .card {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: none;
+        }
+
+        
+        .password-toggle {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #007bff;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="login-container">
+           
             <div class="login-logo">
-                <h2>Pharmacie App</h2>
+                <h2 class="fw-bold">Pharmacie App</h2>
             </div>
-            
-            <div th:if="${param.error}" class="alert alert-danger">
+
+           
+            <div th:if="${param.error}" class="alert alert-danger" role="alert">
                 Identifiant ou mot de passe incorrect
             </div>
-            <div th:if="${param.logout}" class="alert alert-success">
+           
+            <div th:if="${param.logout}" class="alert alert-success" role="alert">
                 Vous avez été déconnecté avec succès
             </div>
-            
+
             <div class="card">
                 <div class="card-header bg-primary text-white">
                     <h4 class="mb-0">Connexion</h4>
                 </div>
                 <div class="card-body">
-                    <form th:action="@{/login}" method="post">
+                    <form th:action="@{/login}" method="post" novalidate>
+                        
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
                         <div class="mb-3">
                             <label for="username" class="form-label">Nom d'utilisateur</label>
-                            <input type="text" class="form-control" id="username" name="username" required>
+                            <input type="text" class="form-control" id="username" name="username" required
+                                   aria-describedby="usernameHelp" placeholder="Entrez votre nom d'utilisateur">
+                            <div id="usernameHelp" class="form-text">Entrez votre identifiant unique.</div>
                         </div>
-                        <div class="mb-3">
+
+                        <!-- Password field with toggle -->
+                        <div class="mb-3 position-relative">
                             <label for="password" class="form-label">Mot de passe</label>
-                            <input type="password" class="form-control" id="password" name="password" required>
+                            <input type="password" class="form-control" id="password" name="password" required
+                                   aria-describedby="passwordHelp" placeholder="Entrez votre mot de passe">
+                            <span class="password-toggle" onclick="togglePassword()">
+                                <i class="bi bi-eye" id="toggleIcon"></i>
+                            </span>
+                            <div id="passwordHelp" class="form-text">Votre mot de passe est sécurisé.</div>
                         </div>
+
+                        <!-- Remember me checkbox -->
                         <div class="mb-3 form-check">
                             <input type="checkbox" class="form-check-input" id="remember-me" name="remember-me">
                             <label class="form-check-label" for="remember-me">Se souvenir de moi</label>
                         </div>
+
+                        <!-- Submit button -->
                         <div class="d-grid">
                             <button type="submit" class="btn btn-primary">Se connecter</button>
                         </div>
                     </form>
                 </div>
+                <!-- Registration link -->
                 <div class="card-footer text-center">
                     <p class="mb-0">Pas encore de compte? <a th:href="@{/register}">S'inscrire</a></p>
                 </div>
@@ -61,6 +101,22 @@
         </div>
     </div>
 
+    <!-- Bootstrap and Bootstrap Icons -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <script>
+        // Password visibility toggle
+        function togglePassword() {
+            const passwordField = document.getElementById('password');
+            const toggleIcon = document.getElementById('toggleIcon');
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                toggleIcon.classList.replace('bi-eye', 'bi-eye-slash');
+            } else {
+                passwordField.type = 'password';
+                toggleIcon.classList.replace('bi-eye-slash', 'bi-eye');
+            }
+        }
+    </script>
 </body>
 </html>
