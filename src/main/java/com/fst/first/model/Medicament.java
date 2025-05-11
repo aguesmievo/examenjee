@@ -85,7 +85,6 @@ public class Medicament {
         this.imagePath = imagePath;
     }
 
-    // Méthodes utilitaires
     @Override
     public String toString() {
         return "Medicament{" +

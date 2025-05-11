@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestion des Utilisateurs | PharmaGest</title>
+    <div th:replace="~{fragments/header :: head}"></div>
+    <style>
+        .user-table {
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+        }
+        .user-table th {
+            background-color: #2c3e50;
+            color: white;
+            font-weight: 500;
+        }
+        .badge-role {
+            font-size: 0.85rem;
+            padding: 0.35em 0.65em;
+        }
+        .badge-admin {
+            background-color: #6f42c1;
+        }
+        .badge-user {
+            background-color: #20c997;
+        }
+        .badge-pharmacist {
+            background-color: #fd7e14;
+        }
+        .action-btns .btn {
+            min-width: 80px;
+        }
+    </style>
+</head>
+<body>
+    <div th:replace="~{fragments/header :: header}"></div>
+
+    <main class="container py-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="h3 mb-0 text-primary">
+                <i class="bi bi-people-fill me-2"></i>Gestion des Utilisateurs
+            </h1>
+            <a th:href="@{/admin/users/add}" class="btn btn-primary">
+                <i class="bi bi-plus-lg me-1"></i>Nouvel Utilisateur
+            </a>
+        </div>
+
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-0">
+                <div th:if="${success}" class="alert alert-success alert-dismissible fade show m-3" role="alert">
+                    <span th:text="${success}"></span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <div th:if="${error}" class="alert alert-danger alert-dismissible fade show m-3" role="alert">
+                    <span th:text="${error}"></span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-hover user-table mb-0">
+                        <thead>
+                            <tr>
+                                <th width="5%">ID</th>
+                                <th>Utilisateur</th>
+                                <th>Email</th>
+                                <th>Rôle</th>
+                                <th width="20%">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="user : ${users}">
+                                <td th:text="${user.id}"></td>
+                                <td>
+                                    <div class="fw-semibold" th:text="${user.username}"></div>
+                                    <small class="text-muted" th:text="${user.fullName} ?: 'Nom complet non défini'"></small>
+                                </td>
+                                <td th:text="${user.email}"></td>
+                                <td>
+                                    <span
+                                        class="rounded-pill badge-role" th:text="${user.role}">
+                                    </span>
+                                </td>
+                                <td class="action-btns">
+                                    <a th:href="@{/admin/users/edit/{id}(id=${user.id})}" 
+                                       class="btn btn-sm btn-outline-primary me-1">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </a>
+                                    <a th:href="@{/admin/users/delete/{id}(id=${user.id})}" 
+                                       class="btn btn-sm btn-outline-danger" 
+                                       onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur?');">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr th:if="${users.empty}">
+                                <td colspan="5" class="text-center py-4 text-muted">
+                                    <i class="bi bi-people display-6 d-block mb-2"></i>
+                                    Aucun utilisateur trouvé
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

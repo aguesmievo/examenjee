@@ -33,8 +33,13 @@ public class AuthController {
     @PostMapping("/register")
     public String registerUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRole(User.Role.ROLE_USER);
+		user.setRole(User.Role.ROLE_PHARMACIST);
         userRepository.save(user);
         return "redirect:/login";
+    }
+    
+    @GetMapping("/logout")
+    public String logout(Model model) {
+    	  return "redirect:/login";
     }
 }

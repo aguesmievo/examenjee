@@ -24,8 +24,17 @@
 	                    </a>
 	                </div>
 	            </div>
+	            <div class="btn-group ms-2 mb-4  ">
+				    <a th:href="@{/admin/medicaments/export}" class="btn btn-outline-success me-3">
+				        <i class="bi bi-download"></i> Exporter
+				    </a>
+				    <a th:href="@{/admin/medicaments/import}" class="btn btn-outline-primary">
+				        <i class="bi bi-upload"></i> Importer
+				    </a>
+				</div>
 	            
 	            <form th:action="@{/admin/medicaments/rechercher}" method="get" class="mb-4">
+					<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 	                <div class="row g-3">
 	                    <div class="col-md-6">
 	                        <div class="input-group">
@@ -69,16 +78,15 @@
 	                    <tbody>
 	                        <tr th:each="medicament : ${medicaments}">
 	                            <td>
-	                                <img th:if="${medicament.imagePath != null}" 
-	                                     th:src="@{'file:///C:/Users/ahmed/Documents/workspace-spring-tool-suite-4-4.20.1.RELEASE/phrarmacie/uploads/' + ${medicament.imagePath}}" 
-	                                     style="width: 50px; height: 50px; object-fit: cover;" 
-	                                     class="img-thumbnail">
+				                    <img th:if="${medicament.imagePath != null}" width="60"
+								     th:src="@{'/uploads/' + ${medicament.imagePath}}" 
+								     alt="Image du médicament" />
 	                                <span th:unless="${medicament.imagePath != null}">-</span>
 	                            </td>
 	                            <td th:text="${medicament.nom}"></td>
 	                            <td th:text="${medicament.category?.name} ?: '-'"></td>
 	                            <td class="text-end" th:text="${medicament.quantite}"></td>
-	                            <td class="text-end" th:text="${'$' + #numbers.formatDecimal(medicament.prix, 1, 2)}"></td>
+	                            <td class="text-end" th:text="${'Tnd ' + #numbers.formatDecimal(medicament.prix, 1, 2)}"></td>
 	                            <td class="text-end" th:text="${#temporals.format(medicament.dateValidite, 'dd/MM/yyyy')}"></td>
 	                            <td class="text-center">
 	                                <div class="btn-group" role="group">
@@ -90,6 +98,7 @@
 	                                          method="post" 
 	                                          class="d-inline"
 	                                          th:onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce médicament?');">
+	                                         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 	                                        <button type="submit" class="btn btn-sm btn-outline-danger">
 	                                            <i class="bi bi-trash"></i> Supprimer
 	                                        </button>

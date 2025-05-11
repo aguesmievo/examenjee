@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Configuration du Site</title>
+    <div th:replace="~{fragments/header :: head}"></div>
+</head>
+<body>
+    <div th:replace="~{fragments/header :: header}"></div>
+
+    <main class="container my-5">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">Configuration du Site</h3>
+            </div>
+            
+            <div class="card-body">
+                <form th:action="@{/admin/configuration}" th:object="${config}" method="post">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Nom du Site</label>
+                                <input type="text" class="form-control" th:field="*{siteName}">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Adresse</label>
+                                <input type="text" class="form-control" th:field="*{address}">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Téléphone</label>
+                                <input type="text" class="form-control" th:field="*{phone}">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" th:field="*{email}">
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Description</label>
+                                <textarea class="form-control" th:field="*{description}" rows="3"></textarea>
+                            </div>
+                            
+                           
+                        </div>
+                        
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label class="form-label">Texte de Copyright</label>
+                                <input type="text" class="form-control" th:field="*{copyrightText}">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Version</label>
+                                <input type="text" class="form-control" th:field="*{version}">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-save"></i> Enregistrer
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

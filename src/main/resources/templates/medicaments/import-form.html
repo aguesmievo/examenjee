@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Importer des médicaments</title>
+    <div th:replace="~{fragments/header :: head}"></div>
+</head>
+<body>
+    <div th:replace="~{fragments/header :: header}"></div>
+
+    <div class="container mt-4">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">
+                    <i class="bi bi-upload"></i> Importer des médicaments
+                </h3>
+            </div>
+            
+            <div class="card-body">
+                <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+                
+                <form th:action="@{#}" method="post" enctype="multipart/form-data">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                    
+                    <div class="mb-3">
+                        <label for="file" class="form-label">Fichier CSV</label>
+                        <input type="file" class="form-control" id="file" name="file" accept=".csv" required>
+                        <div class="form-text">
+                            Format attendu : ID,Nom,Quantité,Prix,Catégorie,Date de validité,Image<br>
+                            Télécharger le <a th:href="@{/admin/medicaments/export}">modèle CSV</a>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="defaultCategoryId" class="form-label">Catégorie par défaut</label>
+                        <select class="form-select" id="defaultCategoryId" name="defaultCategoryId">
+                            <option value="">-- Aucune -- (ignorer les médicaments sans catégorie valide)</option>
+                            <option th:each="category : ${categories}" 
+                                    th:value="${category.id}" 
+                                    th:text="${category.name}"></option>
+                        </select>
+                        <div class="form-text">
+                            Sélectionnez une catégorie à attribuer aux médicaments dont la catégorie n'existe pas
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between">
+                        <a th:href="@{/admin/medicaments}" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left"></i> Retour
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-upload"></i> Importer
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

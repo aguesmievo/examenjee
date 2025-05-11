@@ -143,9 +143,7 @@ public class User implements UserDetails {
         this.enabled = enabled;
     }
 
-    // Enumération des rôles
     public enum Role implements GrantedAuthority {
-        ROLE_USER, 
         ROLE_ADMIN, 
         ROLE_PHARMACIST;
 
@@ -155,7 +153,6 @@ public class User implements UserDetails {
         }
     }
 
-    // Méthodes utilitaires
     @Override
     public String toString() {
         return "User{" +
