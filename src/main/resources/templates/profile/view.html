@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+    <div th:replace="~{fragments/header :: head}"></div>
+</head>
+<body>
+    <div th:replace="~{fragments/header :: header}"></div>
+    
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="mb-0">Mon Profil</h3>
+                    </div>
+                    
+                    <div class="card-body">
+                        <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+                        
+                        <div class="mb-3 row">
+                            <label class="col-sm-3 col-form-label">Nom d'utilisateur:</label>
+                            <div class="col-sm-9">
+                                <p class="form-control-plaintext" th:text="${user.username}"></p>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3 row">
+                            <label class="col-sm-3 col-form-label">Nom complet:</label>
+                            <div class="col-sm-9">
+                                <p class="form-control-plaintext" th:text="${user.fullName}"></p>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3 row">
+                            <label class="col-sm-3 col-form-label">Email:</label>
+                            <div class="col-sm-9">
+                                <p class="form-control-plaintext" th:text="${user.email}"></p>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3 row">
+                            <label class="col-sm-3 col-form-label">Rôle:</label>
+                            <div class="col-sm-9">
+                                <p class="form-control-plaintext" th:text="${user.role}"></p>
+                            </div>
+                        </div>
+                        
+                        <div class="text-end">
+                            <a th:href="@{/profile/edit}" class="btn btn-primary">Modifier le profil</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>

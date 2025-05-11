@@ -23,7 +23,7 @@
 	                          @{/admin/medicaments/modifier/{id}(id=${medicament.id})} : 
 	                          @{/admin/medicaments/ajouter}" 
 	                  th:object="${medicament}" method="post" enctype="multipart/form-data">
-	                
+	                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 	                <div class="row">
 	                    <div class="col-md-6 mb-3">
 	                        <label for="nom" class="form-label">Nom du médicament</label>
@@ -61,7 +61,12 @@
 	                    
 	                    <div class="col-md-4 mb-3">
 	                        <label for="dateValidite" class="form-label">Date de validité</label>
-	                        <input type="date" class="form-control" id="dateValidite" th:field="*{dateValidite}" required>
+	                       <input type="date" class="form-control" id="dateValidite" 
+					       name="dateValidite" 
+					       th:value="${medicament.dateValidite != null} ? ${medicament.dateValidite.getYear() + '-' + 
+					           (medicament.dateValidite.getMonthValue() < 10 ? '0' : '') + medicament.dateValidite.getMonthValue() + '-' + 
+					           (medicament.dateValidite.getDayOfMonth() < 10 ? '0' : '') + medicament.dateValidite.getDayOfMonth()} : ''"
+					       required>
 	                    </div>
 	                </div>
 	                

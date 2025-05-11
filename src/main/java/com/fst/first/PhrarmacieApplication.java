@@ -25,7 +25,6 @@ public class PhrarmacieApplication {
             Path uploadPath = Paths.get(uploadDirectory);
             if (!Files.exists(uploadPath)) {
                 Files.createDirectories(uploadPath);
-                System.out.println("Created upload directory: " + uploadPath.toAbsolutePath());
             }
         } catch (Exception e) {
             System.err.println("Could not create upload directory: " + e.getMessage());
